@@ -7,5 +7,5 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/DataComm/Scene/A2_MapScene.unity
-    guid: 7b0e20e2102c94cf3994041142564dea
+    guid: 6b15f37c0a4f947b1b94ff6e215bbdf8
   m_configObjects: {}

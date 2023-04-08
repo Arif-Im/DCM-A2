@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 7243abd97704e6e4c8a2e1f4254bbda3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tunnelCurrentMesh: {instanceID: 0}
+  - tunnelEditorIntern_ShowEditorWinIcon: {fileID: 2800000, guid: eeb9f153844d85b42b1cd5e867a68c89, type: 3}
+  executionOrder: 0
+  icon: {fileID: 2800000, guid: f121dc26a4ae44d489274003049e9581, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

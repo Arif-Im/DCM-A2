@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &87495573124375175
 MonoBehaviour:
@@ -57,7 +57,7 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 6987302234070218294, guid: d187a5be6d36540f6be93d2816e52ab4,
+  playerPrefab: {fileID: 6987302234070218294, guid: 46e3fb2b81ae14fc6ae244b0dce2fe18,
     type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0

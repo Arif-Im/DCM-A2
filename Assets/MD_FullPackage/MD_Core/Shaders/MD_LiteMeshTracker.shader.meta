@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: c3b093f379b726d428085f1eadc7806c
+timeCreated: 1517622485
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _SnowTrackTex: {fileID: 8400000, guid: 14401ab3ab68f3c43ae3c60beb87b59a, type: 2}
+  - _NormalMap: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

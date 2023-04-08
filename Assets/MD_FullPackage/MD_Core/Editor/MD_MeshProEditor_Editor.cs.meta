@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f285da25975cabd43b2f08f8adbf4786
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - VerticesIcon: {fileID: 2800000, guid: 89487c6fcb2306e47a0571e1e3ce2ab2, type: 3}
+  - ColliderIcon: {fileID: 2800000, guid: 27326a433aa3f174f8e8b96bcbaaf4d2, type: 3}
+  - IdentityIcon: {fileID: 2800000, guid: 5ca64a9474e4c8a4b87368b1fa8e903e, type: 3}
+  - ModifyIcon: {fileID: 2800000, guid: 477ca7009a3da6f449dd79e6b4f5186a, type: 3}
+  - SmoothIcon: {fileID: 2800000, guid: 51732fb4c3e38f7488377e5f1bd64ce5, type: 3}
+  - SubdivisionIcon: {fileID: 2800000, guid: 37cf1bd99c3a1134e85fbc457caa70ff, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
