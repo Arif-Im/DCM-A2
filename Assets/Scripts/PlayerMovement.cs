@@ -1,6 +1,7 @@
 using System;
 using Mirror;
 using Unity.VisualScripting;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,7 +34,25 @@ public class PlayerMovement : NetworkBehaviour
         mainCamera = Camera.main;
     }
 
-    private  void Update()
+    private void Start()
+    {
+        CinemachineTargetGroup targetGroup = GameObject.Find("TargetGroup").GetComponent<CinemachineTargetGroup>();
+        Cinemachine.CinemachineTargetGroup.Target target;
+        target.target = this.transform.Find("LookAtPos").transform;
+        target.weight = 1;
+        target.radius = 2;
+
+        for (int i = 0; i < targetGroup.m_Targets.Length; i++)
+        {
+            if (targetGroup.m_Targets[i].target == null)
+            {
+                targetGroup.m_Targets.SetValue(target, i);
+                return;
+            }
+        }
+    }
+
+    private void Update()
     {
         if (!isOwned)
             return;
