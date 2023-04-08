@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 65045856a6a2c7444b61af97b0e1c291
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - IMG_BrushSettings: {fileID: 2800000, guid: e08363855b3765f4e829bc4c736bfc93, type: 3}
+  - IMG_LogicSettings: {fileID: 2800000, guid: 15857259f8e85894c9d1ceec3f126b10, type: 3}
+  - IMG_AppearanceSettings: {fileID: 2800000, guid: ba0c789274eba054986a23e34daac897,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

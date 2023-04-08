@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 13acd7fe56ed5e248915854742e00b42
+timeCreated: 1511105515
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - _Attach: {fileID: 2800000, guid: 213cca8ff5df3154398dc044b034db38, type: 3}
+  - _Clone: {fileID: 2800000, guid: 72552a0ee094dbb42a818704288b405a, type: 3}
+  - _Weld: {fileID: 2800000, guid: 99aa0fe1a755370449528e070a03d247, type: 3}
+  - _Relax: {fileID: 2800000, guid: d8ffcfa3ab4c655499491c62920c9856, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
