@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 #endif
 
 using StarterAssets;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -44,6 +45,7 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     [Header("Player Grounded")]
     [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
+    [SyncVar] 
     public bool Grounded = true;
 
     [Tooltip("Useful for rough ground")] public float GroundedOffset = -0.14f;
@@ -163,16 +165,27 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     private void Update()
     {
+        if(isOwned)
+            // Call for Other Clients to Sync Rotation
+            ShareRotation(_animator.transform.rotation);
         // https://youtu.be/K5vWj721aM0?t=362
         if (!isLocalPlayer)
             return;
+        JumpAndGravity();
+        GroundedCheck();
         Move();
+        
+        
+    }
+
+    [Command]
+    public void ShareRotation(Quaternion newRotation)
+    {
+        _animator.transform.rotation = newRotation;
     }
 
     private void LateUpdate()
     {
-        JumpAndGravity();
-        GroundedCheck();
         CameraRotation();
     }
 
@@ -187,12 +200,7 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     private void GroundedCheck()
     {
-        // set sphere position, with offset
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-            transform.position.z);
-        Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-            QueryTriggerInteraction.Ignore);
-
+        Grounded = _controller.isGrounded;
         // update animator if using character
         if (_hasAnimator)
         {
@@ -216,9 +224,6 @@ public class DCMThirdPersonController : NetworkBehaviour
         _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
-        // // Cinemachine will follow this target
-        // CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-        //     _cinemachineTargetYaw, 0.0f);
     }
 
     private void Move()

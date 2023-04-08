@@ -10,7 +10,6 @@ public sealed class DCMAnimEventRedirect : MonoBehaviour
     
     private void OnFootstep(AnimationEvent animationEvent)
     {
-        print("OnFootstep");
         _Character.OnFootstep(animationEvent);
     }
 

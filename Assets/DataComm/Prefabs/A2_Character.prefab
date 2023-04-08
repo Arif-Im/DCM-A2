@@ -360,7 +360,7 @@ MonoBehaviour:
   syncInterval: 0.1
   pushLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   canPush: 1
   strength: 1.1
 --- !u!114 &4978954001415466750
@@ -395,8 +395,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 274649b0e221539409070ebf6c18918b, type: 3}
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
   FootstepAudioVolume: 0.3
-  JumpHeight: 1.2
-  Gravity: -468.75
+  JumpHeight: 20
+  Gravity: -34.83
   JumpTimeout: 0.3
   FallTimeout: 0.15
   Grounded: 1
@@ -404,7 +404,7 @@ MonoBehaviour:
   GroundedRadius: 40
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 1
   TopClamp: 70
   BottomClamp: -30
   CameraAngleOverride: 0
@@ -555,6 +555,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: fb240781ff8d048478dbd8b541843897, type: 3}
       propertyPath: m_Name
       value: 04_Eggy_Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: fb240781ff8d048478dbd8b541843897, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: fb240781ff8d048478dbd8b541843897, type: 3}
       propertyPath: m_RootOrder
