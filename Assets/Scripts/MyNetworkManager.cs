@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Mirror;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class MyNetworkManager : NetworkManager
         Debug.Log("You have connected to the server");
     }
 
+    public CinemachineTargetGroup cinemachineTargetGroup;
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         base.OnServerAddPlayer(conn);
@@ -27,7 +29,16 @@ public class MyNetworkManager : NetworkManager
             Random.Range(0f, 1f));
         
         player.setDisplayColor(displayColor);
-        
-        
+
+        if (cinemachineTargetGroup == null)
+        {
+            cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
+        }
+
+        if (cinemachineTargetGroup)
+        {
+            cinemachineTargetGroup.AddMember(player.transform, 1, 100);
+        }
+
     }
 }
