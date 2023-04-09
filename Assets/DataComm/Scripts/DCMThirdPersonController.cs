@@ -1,4 +1,5 @@
 ﻿using System;
+using Cinemachine;
 using Mirror;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
@@ -129,6 +130,28 @@ public class DCMThirdPersonController : NetworkBehaviour
         }
     }
 
+    public CinemachineTargetGroup cinemachineTargetGroup;
+
+    private void OnEnable()
+    {
+        if (cinemachineTargetGroup == null)
+            cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
+        if (cinemachineTargetGroup)
+        {
+            
+            cinemachineTargetGroup.AddMember(this.transform.Find("LookAtPos"), 1,100);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (cinemachineTargetGroup)
+        {
+
+            cinemachineTargetGroup.RemoveMember(this.transform.Find("LookAtPos"));
+        }
+    }
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -167,21 +190,19 @@ public class DCMThirdPersonController : NetworkBehaviour
     {
         if(isOwned)
             // Call for Other Clients to Sync Rotation
-            ShareRotation(_animator.transform.rotation);
+            ShareRotation(transform.rotation);
         // https://youtu.be/K5vWj721aM0?t=362
-        if (!isLocalPlayer)
+        if (!isOwned)
             return;
         JumpAndGravity();
         GroundedCheck();
-        Move();
-        
-        
+        Move(_input.move, _mainCamera.transform.eulerAngles.y);
     }
 
     [Command]
     public void ShareRotation(Quaternion newRotation)
     {
-        _animator.transform.rotation = newRotation;
+        transform.rotation = newRotation;
     }
 
     private void LateUpdate()
@@ -225,8 +246,9 @@ public class DCMThirdPersonController : NetworkBehaviour
         _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 
     }
-
-    private void Move()
+    
+    [Command]
+    private void Move(Vector2 MoveInput,float cameraEulerAngleY)
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
         float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
@@ -235,13 +257,13 @@ public class DCMThirdPersonController : NetworkBehaviour
 
         // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is no input, set the target speed to 0
-        if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+        if (MoveInput== Vector2.zero) targetSpeed = 0.0f;
 
         // a reference to the players current horizontal velocity
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
-        float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+        float inputMagnitude = _input.analogMovement ? MoveInput.magnitude : 1f;
 
         // accelerate or decelerate to target speed
         if (currentHorizontalSpeed < targetSpeed - speedOffset ||
@@ -264,14 +286,14 @@ public class DCMThirdPersonController : NetworkBehaviour
         if (_animationBlend < 0.01f) _animationBlend = 0f;
 
         // normalise input direction
-        Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        Vector3 inputDirection = new Vector3(MoveInput.x, 0.0f, MoveInput.y).normalized;
 
         // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is a move input rotate player when the player is moving
-        if (_input.move != Vector2.zero)
+        if (MoveInput != Vector2.zero)
         {
             _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                              _mainCamera.transform.eulerAngles.y;
+                              cameraEulerAngleY;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                 RotationSmoothTime);
 

@@ -13,17 +13,13 @@ public class MyNetworkManager : NetworkManager
         Debug.Log("You have connected to the server");
     }
 
-    public CinemachineTargetGroup cinemachineTargetGroup;
     public CinemachineVirtualCamera NoPlayerCinemachine;
     public CinemachineVirtualCamera InGameCinemachine;
 
     public override void Awake()
     {
         base.Awake();
-        if (cinemachineTargetGroup == null)
-        {
-            cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
-        }
+
     }
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
@@ -47,15 +43,6 @@ public class MyNetworkManager : NetworkManager
 
         player.setDisplayColor(displayColor);
 
-        if (cinemachineTargetGroup == null)
-        {
-            cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
-        }
-
-        if (cinemachineTargetGroup)
-        {
-            cinemachineTargetGroup.AddMember(player.GetComponentInChildren<Animator>().transform, 1, 100);
-        }
     }
 
     public override void OnStopServer()
@@ -66,10 +53,7 @@ public class MyNetworkManager : NetworkManager
             NoPlayerCinemachine.gameObject.SetActive(true);
         if (InGameCinemachine)
             InGameCinemachine.gameObject.SetActive(false);
-        if (cinemachineTargetGroup)
-        {
-            cinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[]{};
-        }
+
     } 
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -77,11 +61,7 @@ public class MyNetworkManager : NetworkManager
         base.OnServerDisconnect(conn);
         MyNetworkPlayer player = conn.identity.GetComponent<MyNetworkPlayer>();
 
-        if (cinemachineTargetGroup)
-        {
-            Transform member = player.GetComponentInChildren<Animator>().transform;
-            cinemachineTargetGroup.RemoveMember(member);
-        }
+
     }
 
  
