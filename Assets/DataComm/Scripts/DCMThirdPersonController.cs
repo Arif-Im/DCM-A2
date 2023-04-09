@@ -171,7 +171,7 @@ public class DCMThirdPersonController : NetworkBehaviour
         // _hasAnimator = TryGetComponent(out _animator);
         _animator = GetComponentInChildren<Animator>();
         _hasAnimator = _animator != null;
-        _controller = GetComponentInChildren<CharacterController>();
+        _controller = GetComponent<CharacterController>();
         _input = GetComponent<DCMInputs>();
 #if ENABLE_INPUT_SYSTEM
         _playerInput = GetComponent<PlayerInput>();
@@ -194,9 +194,14 @@ public class DCMThirdPersonController : NetworkBehaviour
         // https://youtu.be/K5vWj721aM0?t=362
         if (!isOwned)
             return;
-        JumpAndGravity();
-        GroundedCheck();
         Move(_input.move, _mainCamera.transform.eulerAngles.y);
+    }
+
+    private void FixedUpdate()
+    {
+        GroundedCheck();
+        JumpAndGravity();
+        
     }
 
     [Command]
