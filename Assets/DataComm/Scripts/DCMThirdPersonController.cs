@@ -129,17 +129,7 @@ public class DCMThirdPersonController : NetworkBehaviour
     }
 
 
-    private void Awake()
-    {
-        // get a reference to our main camera
-        if (_mainCamera == null)
-        {
-            _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-        }
-
-        AddSelfToCineGroupTarget();
-    }
-
+ 
     public CinemachineTargetGroup cinemachineTargetGroup;
  
     private void OnDisable()
@@ -148,12 +138,6 @@ public class DCMThirdPersonController : NetworkBehaviour
         {
             cinemachineTargetGroup.RemoveMember(this.transform.Find("LookAtPos"));
         }
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        AddSelfToCineGroupTarget();
     }
 
     public void AddSelfToCineGroupTarget()
@@ -177,11 +161,13 @@ public class DCMThirdPersonController : NetworkBehaviour
         base.OnStartAuthority();
         PlayerInput playerInput = GetComponent<PlayerInput>();
         playerInput.enabled = true;
-        AddSelfToCineGroupTarget();
     }
 
     private void Start()
     {
+        _mainCamera = Camera.main.transform.gameObject;
+
+        AddSelfToCineGroupTarget();
         // _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
         // _hasAnimator = TryGetComponent(out _animator);
@@ -215,8 +201,9 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        
         GroundedCheck();
-        if (isLocalPlayer && _playerInput.enabled)
+        if (isOwned && _playerInput.enabled)
         {
             JumpAndGravity();
         }
