@@ -16,11 +16,6 @@ public class MyNetworkManager : NetworkManager
     public CinemachineVirtualCamera NoPlayerCinemachine;
     public CinemachineVirtualCamera InGameCinemachine;
 
-    public override void Awake()
-    {
-        base.Awake();
-
-    }
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
@@ -55,14 +50,6 @@ public class MyNetworkManager : NetworkManager
             InGameCinemachine.gameObject.SetActive(false);
 
     } 
-
-    public override void OnServerDisconnect(NetworkConnectionToClient conn)
-    {
-        base.OnServerDisconnect(conn);
-        MyNetworkPlayer player = conn.identity.GetComponent<MyNetworkPlayer>();
-
-
-    }
 
  
 }

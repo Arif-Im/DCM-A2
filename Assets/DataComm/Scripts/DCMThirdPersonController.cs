@@ -188,9 +188,7 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     private void Update()
     {
-        if(isOwned)
-            // Call for Other Clients to Sync Rotation
-            ShareRotation(transform.rotation);
+
         // https://youtu.be/K5vWj721aM0?t=362
         if (!isOwned)
             return;
@@ -204,11 +202,6 @@ public class DCMThirdPersonController : NetworkBehaviour
         
     }
 
-    [Command]
-    public void ShareRotation(Quaternion newRotation)
-    {
-        transform.rotation = newRotation;
-    }
 
     private void LateUpdate()
     {
