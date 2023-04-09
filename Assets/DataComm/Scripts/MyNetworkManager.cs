@@ -11,6 +11,11 @@ public class MyNetworkManager : NetworkManager
         base.OnClientConnect();
         // Debug.Log("OnClientConnect");
         Debug.Log("You have connected to the server");
+        if (NoPlayerCinemachine)
+            NoPlayerCinemachine.gameObject.SetActive(false);
+        if (InGameCinemachine)
+            InGameCinemachine.gameObject.SetActive(true);
+
     }
 
     public CinemachineVirtualCamera NoPlayerCinemachine;

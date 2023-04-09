@@ -147,11 +147,14 @@ public class DCMThirdPersonController : NetworkBehaviour
         if (cinemachineTargetGroup)
         {
             var toAdd = this.transform.Find("LookAtPos");
-            
-            // Does not contains LooKAtPos ToAdd
-            if (cinemachineTargetGroup.m_Targets.Any(x=>x.target==toAdd) == false)
-            {   
-                cinemachineTargetGroup.AddMember(toAdd, 1,100);
+
+            if (toAdd)
+            {
+                // Does not contains LooKAtPos ToAdd
+                if (cinemachineTargetGroup.m_Targets.Any(x => x.target == toAdd) == false)
+                {
+                    cinemachineTargetGroup.AddMember(toAdd, 1, 100);
+                }
             }
         }
     }
