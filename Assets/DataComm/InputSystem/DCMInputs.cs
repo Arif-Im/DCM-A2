@@ -6,12 +6,11 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-	public class DCMInputs : NetworkBehaviour
+	public class DCMInputs : MonoBehaviour
 	{
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
-		[SyncVar]
 		public bool jump;
 		public bool sprint;
 

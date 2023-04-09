@@ -1,7 +1,7 @@
 ﻿using Mirror;
 using UnityEngine;
 
-    public class DCMRigidBodyPush : NetworkBehaviour
+    public class DCMRigidBodyPush : MonoBehaviour
     {
         public LayerMask pushLayers;
         public bool canPush;
