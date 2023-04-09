@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Cinemachine;
 using Mirror;
 using UnityEngine;
@@ -86,11 +87,14 @@ public class DCMThirdPersonController : NetworkBehaviour
     
     private float _targetRotation = 0.0f;
     private float _rotationVelocity;
+    [SyncVar]
     private float _verticalVelocity;
     private float _terminalVelocity = 53.0f;
 
     // timeout deltatime
+    [SyncVar]
     private float _jumpTimeoutDelta;
+    [SyncVar]
     private float _fallTimeoutDelta;
 
     // animation IDs
@@ -132,33 +136,40 @@ public class DCMThirdPersonController : NetworkBehaviour
         {
             _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
+
+        AddSelfToCineGroupTarget();
     }
 
     public CinemachineTargetGroup cinemachineTargetGroup;
+ 
+    private void OnDisable()
+    {
+        if (cinemachineTargetGroup)
+        {
+            cinemachineTargetGroup.RemoveMember(this.transform.Find("LookAtPos"));
+        }
+    }
 
-    private void OnEnable()
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        AddSelfToCineGroupTarget();
+    }
+
+    public void AddSelfToCineGroupTarget()
     {
         if (cinemachineTargetGroup == null)
             cinemachineTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
         if (cinemachineTargetGroup)
         {
+            var toAdd = this.transform.Find("LookAtPos");
             
-            cinemachineTargetGroup.AddMember(this.transform.Find("LookAtPos"), 1,100);
+            // Does not contains LooKAtPos ToAdd
+            if (cinemachineTargetGroup.m_Targets.Any(x=>x.target==toAdd) == false)
+            {   
+                cinemachineTargetGroup.AddMember(toAdd, 1,100);
+            }
         }
-    }
-
-    private void OnDisable()
-    {
-        if (cinemachineTargetGroup)
-        {
-
-            cinemachineTargetGroup.RemoveMember(this.transform.Find("LookAtPos"));
-        }
-    }
-
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
     }
 
     public override void OnStartAuthority()
@@ -166,6 +177,7 @@ public class DCMThirdPersonController : NetworkBehaviour
         base.OnStartAuthority();
         PlayerInput playerInput = GetComponent<PlayerInput>();
         playerInput.enabled = true;
+        AddSelfToCineGroupTarget();
     }
 
     private void Start()
