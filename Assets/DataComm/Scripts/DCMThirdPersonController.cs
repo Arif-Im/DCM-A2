@@ -44,10 +44,10 @@ public class DCMThirdPersonController : NetworkBehaviour
     [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
     public float FallTimeout = 0.15f;
 
-    [Header("Player Grounded")]
-    [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-    [SyncVar] 
-    public bool Grounded = true;
+    // [Header("Player Grounded")]
+    // [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
+    // [SyncVar] 
+    // public bool Grounded = true;
 
     [Tooltip("Useful for rough ground")] public float GroundedOffset = -0.14f;
 
@@ -79,7 +79,11 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     // player
     private float _speed;
+    [SyncVar]
     private float _animationBlend;
+    // [SyncVar]
+    private float inputMagnitude = 1.0f;
+    
     private float _targetRotation = 0.0f;
     private float _rotationVelocity;
     private float _verticalVelocity;
@@ -188,18 +192,29 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     private void Update()
     {
-
         // https://youtu.be/K5vWj721aM0?t=362
         if (!isOwned)
             return;
-        Move(_input.move, _mainCamera.transform.eulerAngles.y);
+        if (isLocalPlayer && _playerInput.enabled)
+        {    
+            Move(_input.move, _mainCamera.transform.eulerAngles.y);
+        }
     }
 
     private void FixedUpdate()
     {
         GroundedCheck();
-        JumpAndGravity();
-        
+        if (isLocalPlayer && _playerInput.enabled)
+        {
+            JumpAndGravity();
+        }
+
+        // update animator if using character
+        if (_hasAnimator)
+        {
+            _animator.SetFloat(_animIDSpeed, _animationBlend > 0 ? 1: 0 );
+            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+        }
     }
 
 
@@ -219,11 +234,10 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     private void GroundedCheck()
     {
-        Grounded = _controller.isGrounded;
         // update animator if using character
         if (_hasAnimator)
         {
-            _animator.SetBool(_animIDGrounded, Grounded);
+            _animator.SetBool(_animIDGrounded, _controller.isGrounded);
         }
     }
 
@@ -261,8 +275,7 @@ public class DCMThirdPersonController : NetworkBehaviour
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
-        float inputMagnitude = _input.analogMovement ? MoveInput.magnitude : 1f;
-
+        // float inputMagnitude = _input.analogMovement ? MoveInput.magnitude : 1f;
         // accelerate or decelerate to target speed
         if (currentHorizontalSpeed < targetSpeed - speedOffset ||
             currentHorizontalSpeed > targetSpeed + speedOffset)
@@ -306,17 +319,13 @@ public class DCMThirdPersonController : NetworkBehaviour
         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                          new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
-        // update animator if using character
-        if (_hasAnimator)
-        {
-            _animator.SetFloat(_animIDSpeed, _animationBlend);
-            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-        }
+
     }
 
+    [Command]
     private void JumpAndGravity()
     {
-        if (Grounded)
+        if (_controller.isGrounded)
         {
             // reset the fall timeout timer
             _fallTimeoutDelta = FallTimeout;
@@ -390,19 +399,19 @@ public class DCMThirdPersonController : NetworkBehaviour
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
-
-        if (Grounded) Gizmos.color = transparentGreen;
-        else Gizmos.color = transparentRed;
-
-        // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-        Gizmos.DrawSphere(
-            new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-            GroundedRadius);
-    }
+    // private void OnDrawGizmosSelected()
+    // {
+    //     Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+    //     Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+    //
+    //     if (Grounded) Gizmos.color = transparentGreen;
+    //     else Gizmos.color = transparentRed;
+    //
+    //     // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
+    //     Gizmos.DrawSphere(
+    //         new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
+    //         GroundedRadius);
+    // }
 
     public void OnFootstep(AnimationEvent animationEvent)
     {

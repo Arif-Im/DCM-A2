@@ -11,7 +11,7 @@ namespace StarterAssets
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
-		
+		[SyncVar]
 		public bool jump;
 		public bool sprint;
 
