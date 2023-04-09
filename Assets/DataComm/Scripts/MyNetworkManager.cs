@@ -66,5 +66,23 @@ public class MyNetworkManager : NetworkManager
             NoPlayerCinemachine.gameObject.SetActive(true);
         if (InGameCinemachine)
             InGameCinemachine.gameObject.SetActive(false);
+        if (cinemachineTargetGroup)
+        {
+            cinemachineTargetGroup.m_Targets = new CinemachineTargetGroup.Target[]{};
+        }
+    } 
+
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerDisconnect(conn);
+        MyNetworkPlayer player = conn.identity.GetComponent<MyNetworkPlayer>();
+
+        if (cinemachineTargetGroup)
+        {
+            Transform member = player.GetComponentInChildren<Animator>().transform;
+            cinemachineTargetGroup.RemoveMember(member);
+        }
     }
+
+ 
 }

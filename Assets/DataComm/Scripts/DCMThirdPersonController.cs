@@ -29,7 +29,7 @@ public class DCMThirdPersonController : NetworkBehaviour
 
     public AudioClip LandingAudioClip;
     public AudioClip[] FootstepAudioClips;
-    [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
+    public float FootstepsAudioVolume = 1.0f;
 
     [Space(10)] [Tooltip("The height the player can jump")]
     public float JumpHeight = 1.2f;
@@ -392,7 +392,7 @@ public class DCMThirdPersonController : NetworkBehaviour
             {
                 var index = Random.Range(0, FootstepAudioClips.Length);
                 AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center),
-                    FootstepAudioVolume);
+                    FootstepsAudioVolume);
             }
         }
     }
@@ -402,7 +402,7 @@ public class DCMThirdPersonController : NetworkBehaviour
         if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
             AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center),
-                FootstepAudioVolume);
+                FootstepsAudioVolume);
         }
     }
 
